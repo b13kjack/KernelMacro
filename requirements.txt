@@ -1,0 +1,7 @@
+customtkinter
+pynput
+Pillow
+packaging
+pyinstaller
+interception-python
+pywin32
