@@ -1,3 +1,5 @@
+import sys
+import os
 import ctypes
 from ctypes import wintypes
 import math
@@ -7,6 +9,22 @@ import time
 
 from pynput import keyboard, mouse
 
+# Ensure DLLs can be found when packaged with PyInstaller or running locally
+if hasattr(os, 'add_dll_directory'):
+    try:
+        if getattr(sys, 'frozen', False):
+            # Running as compiled executable (add sys._MEIPASS and the folder containing the .exe)
+            os.add_dll_directory(sys._MEIPASS)
+            os.add_dll_directory(os.path.dirname(sys.executable))
+        else:
+            # Running from source (add current script dir and the dist folder)
+            os.add_dll_directory(os.path.abspath(os.path.dirname(__file__)))
+            dist_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'dist')
+            if os.path.exists(dist_path):
+                os.add_dll_directory(dist_path)
+    except Exception:
+        pass
+
 # Try to load interception-python for kernel-level input injection.
 # Falls back to ctypes SendInput if the driver is not installed.
 _USE_INTERCEPTION = False
@@ -14,7 +32,7 @@ try:
     import interception as _interception
     _interception.auto_capture_devices()
     _USE_INTERCEPTION = True
-    print("[MacroPlayer] Interception driver loaded – using kernel-level input.")
+    print("[MacroPlayer] Interception driver loaded - using kernel-level input.")
 except Exception as _interception_err:
     print(f"[MacroPlayer] Interception driver not available ({_interception_err}).")
     print("[MacroPlayer] Falling back to SendInput (may not work in some games).")

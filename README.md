@@ -16,6 +16,7 @@ It can:
 - Windows
 - Python 3.10+ recommended
 - PowerShell (for the build script)
+- **Oblitum Interception Driver** (must be installed on the system for kernel-level inputs)
 
 ## Install
 
@@ -34,6 +35,8 @@ Start the app from the repo root:
 ```powershell
 .\.venv\Scripts\python.exe main.py
 ```
+
+> **Note:** For script execution, either ensure the Interception driver is in your system path, or place `interception.dll` in the `dist/` folder.
 
 ## Usage
 
@@ -77,6 +80,8 @@ The output executable is expected at:
 ```text
 dist\MacroRecorder.exe
 ```
+
+> **Important:** To ensure the executable functions properly, you **MUST** place `interception.dll` in the `dist\` folder alongside `MacroRecorder.exe`.
 
 ## Files
 
